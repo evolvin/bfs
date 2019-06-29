@@ -1,0 +1,49 @@
+#include<bits/stdc++.h>
+using namespace std;
+int bfs(int a1,int b1,int a2,int b2)
+{
+	int x[8]={1,1,-1,-1,2,-2,2,-2},y[8]={-2,2,-2,2,-1,-1,1,1};//possible moves from current position after adding x[i],y[i]
+	bool vis[8][8];
+	int level[8][8];
+	memset(level,0,sizeof(level));
+	memset(vis,false,sizeof(vis));
+	queue<pair<int,int> >q;
+	pair<int,int>p,l;
+	p.first=a1;
+	p.second=b1;
+	q.push(p);
+	vis[p.first][p.second]=true;
+	while(!q.empty())
+	{
+		l=q.front();
+		q.pop();
+		if(l.first==a2 && l.second==b2)
+		return level[l.first][l.second];
+		for(int i=0;i<8;i++)
+		{
+			int m=l.first+x[i],n=l.second+y[i];
+			if(m>7 || n>7 || m<0 || n<0)  // invalid moves
+			continue;
+			else if(vis[m][n]==false)
+			{
+				q.push(make_pair(m,n));
+				vis[m][n]=true;
+				level[m][n]=level[l.first][l.second]+1; // moves to reach position (m+1)(n+1)
+			}
+		}
+	}
+	
+}
+int main()
+{
+	int b1,b2,t;
+	char a1,a2;
+	cin>>t;
+	while(t--)
+	{
+		cin>>a1>>b1;
+		cin>>a2>>b2;
+		int x=bfs(a1-'a',b1-1,a2-'a',b2-1);// converted into indexing with zero
+		cout<<x<<endl;
+	}
+}
